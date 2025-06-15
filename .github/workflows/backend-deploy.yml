@@ -1,4 +1,4 @@
-name: Docker ECR Deploy to EC2
+name: Deploy Backend to EC2
 
 on:
   push:
@@ -7,6 +7,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
       - name: Checkout code
@@ -19,7 +23,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./backend/gradlew build
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
