@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
 
       - name: Build with Gradle
-        run: ./backend/gradlew build
+        run: ./gradlew build
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
