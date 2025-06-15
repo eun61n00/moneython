@@ -37,17 +37,12 @@ jobs:
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-backend
 
-      - name: Decode SSH key
-        run: |
-          echo "${{ secrets.EC2_KEY }}" | base64 -d > key.pem
-          chmod 600 key.pem
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          key: key.pem
+          key: ${{ secrets.EC2_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-backend
             docker stop moneython || true
