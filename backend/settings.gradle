@@ -1,1 +1,8 @@
 rootProject.name = 'backend'
+
+include 'gateway'
+include 'common'
+include 'config-server'
+include 'auth-service'
+include 'user-service'
+include 'quiz-service'

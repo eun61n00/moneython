@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: global-config
+
+  profiles:
+    active: default
+
+  cloud:
+    config:
+      allowOverride: true
+      overrideNone: false
+      overrideSystemProperties: false
+
+logging:
+  level:
+    root: INFO
