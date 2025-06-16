@@ -4,6 +4,9 @@ COPY --chown=gradle:gradle . /app
 WORKDIR /app
 RUN gradle bootJar --no-daemon
 
+# 빌드된 파일 확인 (디버깅용)
+RUN ls -R /app
+
 # 2단계: 실행
 FROM openjdk:17-jdk-alpine
 LABEL authors="eunbin"
