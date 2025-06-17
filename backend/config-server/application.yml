@@ -10,5 +10,11 @@ spring:
       server:
         git:
           uri: https://github.com/eun61n00/moneython
-          default-label: feat/msa-architecture-setup
+          default-label: feat/docker-deploy-setup
           search-paths: backend/config-server/config-repo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
