@@ -27,7 +27,7 @@ jobs:
 
             - name: Build & Push Multi-Service Docker Images
               run: |
-                  docker-compose -f docker-compose.yml build
+                  docker compose -f docker-compose.yml build
                   docker tag auth-service ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:latest
                   docker tag user-service ${{ secrets.DOCKER_HUB_USERNAME }}/user-service:latest
                   docker tag quiz-service ${{ secrets.DOCKER_HUB_USERNAME }}/quiz-service:latest
