@@ -1,108 +1,126 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  eureka-server:
-    build:
-      context: .
-      dockerfile: eureka-server/Dockerfile
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    networks:
-      - moneython-networks
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://eureka-server:8761/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    eureka-server:
+        build:
+            context: .
+            dockerfile: eureka-server/Dockerfile
+        container_name: eureka-server
+        image: moneython-eureka-server
+        ports:
+            - "8761:8761"
+        networks:
+            - moneython-networks
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://eureka-server:8761/actuator/health",
+                ]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
 
-  config-server:
-    build:
-      context: .
-      dockerfile: config-server/Dockerfile
-    container_name: config-server
-    ports:
-      - "8888:8888"
-    environment:
-      - GIT_REPO=https://github.com/eun61n00/moneython
-    networks:
-      - moneython-networks
-    depends_on:
-      - eureka-server
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://config-server:8888/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+    config-server:
+        build:
+            context: .
+            dockerfile: config-server/Dockerfile
+        container_name: config-server
+        image: moneython-config-server
+        ports:
+            - "8888:8888"
+        environment:
+            - GIT_REPO=https://github.com/eun61n00/moneython
+        networks:
+            - moneython-networks
+        depends_on:
+            - eureka-server
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://config-server:8888/actuator/health",
+                ]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
 
-  auth-service:
-    build:
-      context: .
-      dockerfile: auth-service/Dockerfile
-    container_name: auth-service
-    ports:
-      - "8081:8081"
-    networks:
-      - moneython-networks
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+    auth-service:
+        build:
+            context: .
+            dockerfile: auth-service/Dockerfile
+        container_name: auth-service
+        image: moneython-auth-service
+        ports:
+            - "8081:8081"
+        networks:
+            - moneython-networks
+        depends_on:
+            config-server:
+                condition: service_healthy
+            eureka-server:
+                condition: service_healthy
 
-  user-service:
-    build:
-      context: .
-      dockerfile: user-service/Dockerfile
-    container_name: user-service
-    ports:
-      - "8082:8082"
-    networks:
-      - moneython-networks
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+    user-service:
+        build:
+            context: .
+            dockerfile: user-service/Dockerfile
+        container_name: user-service
+        image: moneython-user-service
+        ports:
+            - "8082:8082"
+        networks:
+            - moneython-networks
+        depends_on:
+            config-server:
+                condition: service_healthy
+            eureka-server:
+                condition: service_healthy
 
-  quiz-service:
-    build:
-      context: .
-      dockerfile: quiz-service/Dockerfile
-    container_name: quiz-service
-    ports:
-      - "8083:8083"
-    networks:
-      - moneython-networks
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+    quiz-service:
+        build:
+            context: .
+            dockerfile: quiz-service/Dockerfile
+        container_name: quiz-service
+        image: moneython-quiz-service
+        ports:
+            - "8083:8083"
+        networks:
+            - moneython-networks
+        depends_on:
+            config-server:
+                condition: service_healthy
+            eureka-server:
+                condition: service_healthy
 
-  gateway:
-    build:
-      context: .
-      dockerfile: gateway/Dockerfile
-    container_name: gateway
-    ports:
-      - "8080:8080"
-    networks:
-      - moneython-networks
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      auth-service:
-        condition: service_started
-      user-service:
-        condition: service_started
-      quiz-service:
-        condition: service_started
+    gateway:
+        build:
+            context: .
+            dockerfile: gateway/Dockerfile
+        container_name: gateway
+        image: moneython-gateway
+        ports:
+            - "8080:8080"
+        networks:
+            - moneython-networks
+        depends_on:
+            config-server:
+                condition: service_healthy
+            eureka-server:
+                condition: service_healthy
+            auth-service:
+                condition: service_started
+            user-service:
+                condition: service_started
+            quiz-service:
+                condition: service_started
 
 networks:
-  moneython-networks:
-    driver: bridge
+    moneython-networks:
+        driver: bridge

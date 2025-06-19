@@ -28,19 +28,19 @@ jobs:
             - name: Build & Push Multi-Service Docker Images
               run: |
                   docker compose -f docker-compose.yml build
-                  docker tag auth-service ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:latest
-                  docker tag user-service ${{ secrets.DOCKER_HUB_USERNAME }}/user-service:latest
-                  docker tag quiz-service ${{ secrets.DOCKER_HUB_USERNAME }}/quiz-service:latest
-                  docker tag config-server ${{ secrets.DOCKER_HUB_USERNAME }}/config-server:latest
-                  docker tag eureka-server ${{ secrets.DOCKER_HUB_USERNAME }}/eureka-server:latest
-                  docker tag gateway ${{ secrets.DOCKER_HUB_USERNAME }}/gateway:latest
+                  docker tag moneython-auth-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-auth-service:latest
+                  docker tag moneython-user-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-user-service:latest
+                  docker tag moneython-quiz-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-quiz-service:latest
+                  docker tag moneython-config-server ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-config-server:latest
+                  docker tag moneython-eureka-server ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-eureka-server:latest
+                  docker tag moneython-gateway ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-gateway:latest
 
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/auth-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/user-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/quiz-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/config-server:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eureka-server:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/gateway:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-auth-service:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-user-service:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-quiz-service:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-config-server:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-eureka-server:latest
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-gateway:latest
 
             - name: Deploy to EC2
               uses: appleboy/ssh-action@v1.0.0
