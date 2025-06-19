@@ -10,4 +10,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
   server:
-    wait-time-in-ms-when-svnc-empty: 0
+    wait-time-in-ms-when-sync-empty: 0
+  instance:
+    hostname: eureka-server
+    prefer-ip-address: true

@@ -1,8 +1,20 @@
+pluginManagement {
+    plugins {
+        id "org.springframework.boot" version "3.5.0"
+        id "io.spring.dependency-management" version "1.1.4"
+    }
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'backend'
 
 include 'gateway'
 include 'common'
 include 'config-server'
+include 'eureka-server'
 include 'auth-service'
 include 'user-service'
 include 'quiz-service'
