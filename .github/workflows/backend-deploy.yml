@@ -61,5 +61,5 @@ jobs:
                       cd /home/ubuntu/moneython/backend
                       echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
                       docker-compose down
-                      docker-compose pull
-                      docker-compose up -d --remove-orphans
+                      docker compose -f docker-compose.ec2.yml pull
+                      docker compose -f docker-compose.ec2.yml up -d --remove-orphans
