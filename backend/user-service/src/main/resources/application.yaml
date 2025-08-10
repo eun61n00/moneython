@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: user-service
+    config:
+        import: configserver:http://config-server:8888
+    autoconfigure:
+        exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

@@ -1,0 +1,4 @@
+spring:
+    application:
+        name: config-server
+# 테스트 환경에서는 config-server import를 제거
