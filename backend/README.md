@@ -43,6 +43,12 @@ docker-compose up --build
 - develop: 통합 개발 브랜치
 - 서비스명/기능명: 단위 기능 구현 브랜치 (예: user/login)
 
+### 🐳 Docker 배포 환경
+- **개발환경**: `docker-compose.yml` - 로컬 빌드 및 개발 환경
+- **프로덕션**: `docker-compose.prod.yml` - Docker Hub 이미지 기반 운영 환경  
+- **EC2 배포**: `docker-compose.ec2.yml` - AWS EC2 서버 전용 설정
+- **CI/CD**: `.github/workflows/backend-deploy.yml` - 자동 빌드 및 배포 파이프라인
+
 ### 📁 관련 정보
 - Frontend Repository: 준비 중
 - Swagger: 준비 중
