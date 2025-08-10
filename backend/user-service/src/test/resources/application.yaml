@@ -2,4 +2,3 @@ spring:
     application:
         name: user-service
     autoconfigure:
-        exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
