@@ -16,6 +16,14 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
+            # - name: Run tests
+            #   run: |
+            #     ./gradlew :auth-service:test -Dspring.profiles.active=test
+            #     ./gradlew :user-service:test -Dspring.profiles.active=test
+            #     ./gradlew :quiz-service:test -Dspring.profiles.active=test
+            #     ./gradlew :gateway:test -Dspring.profiles.active=test
+            #     ./gradlew :config-server:test -Dspring.profiles.active=test
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
@@ -25,22 +33,14 @@ jobs:
                   username: ${{ secrets.DOCKER_HUB_USERNAME }}
                   password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-            - name: Build & Push Multi-Service Docker Images
+            - name: Build and Push Docker Images
               run: |
+                  # docker-compose.yml에 DOCKER_USER 변수를 전달하여 이미지 이름을 동적으로 설정
+                  # Git Commit SHA를 이미지 태그로 사용
+                  export GIT_TAG=${{ github.sha }}
+                  export DOCKER_USER=${{ secrets.DOCKER_HUB_USERNAME }}
                   docker compose -f docker-compose.yml build
-                  docker tag moneython-auth-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-auth-service:latest
-                  docker tag moneython-user-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-user-service:latest
-                  docker tag moneython-quiz-service ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-quiz-service:latest
-                  docker tag moneython-config-server ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-config-server:latest
-                  docker tag moneython-eureka-server ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-eureka-server:latest
-                  docker tag moneython-gateway ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-gateway:latest
-
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-auth-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-user-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-quiz-service:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-config-server:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-eureka-server:latest
-                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/moneython-gateway:latest
+                  docker compose -f docker-compose.yml push
 
             - name: Copy docker-compose.yml to EC2
               uses: appleboy/scp-action@v0.1.4
@@ -48,7 +48,7 @@ jobs:
                   host: ${{ secrets.EC2_HOST }}
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.EC2_KEY }}
-                  source: "backend/docker-compose.ec2.yml"
+                  source: "backend/docker-compose.prod.yml"
                   target: "/home/ubuntu/moneython"
 
             - name: Deploy to EC2
@@ -58,8 +58,12 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.EC2_KEY }}
                   script: |
-                      cd /home/ubuntu/moneython/backend
+                      cd /home/ubuntu/moneython
+                      export GIT_TAG=${{ github.sha }}
+                      export DOCKER_USER=${{ secrets.DOCKER_HUB_USERNAME }}
                       echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-                      docker compose -f docker-compose.ec2.yml down
-                      docker compose -f docker-compose.ec2.yml pull
-                      docker compose -f docker-compose.ec2.yml up -d --remove-orphans
+                      # docker-compose.prod.yml을 사용하여 배포
+                      docker compose -f docker-compose.prod.yml down
+                      docker compose -f docker-compose.prod.yml pull
+                      docker compose -f docker-compose.prod.yml up -d --remove-orphans
+                      
