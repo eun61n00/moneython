@@ -42,13 +42,16 @@ jobs:
                   docker compose -f docker-compose.yml build
                   docker compose -f docker-compose.yml push
 
+            - name: Check docker-compose.prod.yml exists
+              run: ls -l docker-compose.prod.yml
+
             - name: Copy docker-compose.yml to EC2
               uses: appleboy/scp-action@v1.0.0
               with:
                   host: ${{ secrets.EC2_HOST }}
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.EC2_KEY }}
-                  source: "~/moneython/backend/docker-compose.prod.yml"
+                  source: "./docker-compose.prod.yml"
                   target: "/home/ubuntu/moneython/"
 
             - name: Deploy to EC2
