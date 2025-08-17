@@ -44,4 +44,12 @@ out/
 Thumbs.db
 
 ### Key File ###
-.pem
+*.pem
+
+### Others ###
+assets/
+*.pdf
+*.pptx
+
+### Environment Variables ###
+.env
