@@ -1,0 +1,41 @@
+spring:
+    application:
+        name: user-service
+    cloud:
+        config:
+            enabled: false
+        discovery:
+            enabled: false
+    datasource:
+        url: jdbc:h2:mem:testdb
+        driverClassName: org.h2.Driver
+        username: sa
+        password: password
+    h2:
+        console:
+            enabled: true
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+
+eureka:
+    client:
+        enabled: false
+
+jwt:
+    secret: demo-256-bit-secret-for-standalone-testing-only
+    expiration: 86400000
+
+server:
+    port: 8081
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info
