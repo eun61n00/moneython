@@ -39,7 +39,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// DB Connector
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'org.postgresql:postgresql'
 
 	// Development Tools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
