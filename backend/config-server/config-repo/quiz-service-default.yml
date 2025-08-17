@@ -1,16 +1,24 @@
 server:
-  port: 8083
+    port: 8083
 
 spring:
-  application:
-    name: quiz-service
+    application:
+        name: quiz-service
+    datasource:
+        url: jdbc:postgresql://postgres-db:5432/quiz_service_db
+        username: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: update
 
 eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka
-  instance:
-    prefer-ip-address: true
-    hostname: quiz-service
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: http://eureka-server:8761/eureka
+    instance:
+        prefer-ip-address: true
+        hostname: quiz-service

@@ -35,8 +35,6 @@ jobs:
 
             - name: Build and Push Docker Images
               run: |
-                  # docker-compose.yml에 DOCKER_USER 변수를 전달하여 이미지 이름을 동적으로 설정
-                  # Git Commit SHA를 이미지 태그로 사용
                   export GIT_TAG=${{ github.sha }}
                   export DOCKER_USER=${{ secrets.DOCKER_HUB_USERNAME }}
                   docker compose -f docker-compose.yml build
@@ -58,8 +56,9 @@ jobs:
                       cd /home/ubuntu/moneython
                       export GIT_TAG=${{ github.sha }}
                       export DOCKER_USER=${{ secrets.DOCKER_HUB_USERNAME }}
+                      export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+                      export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
                       echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-                      # docker-compose.prod.yml을 사용하여 배포
                       docker compose -f docker-compose.prod.yml down
                       docker compose -f docker-compose.prod.yml pull
                       docker compose -f docker-compose.prod.yml up -d --remove-orphans
