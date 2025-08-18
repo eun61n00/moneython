@@ -10,7 +10,7 @@ spring:
                 git:
                     uri: https://github.com/eun61n00/moneython
                     search-paths: backend/config-server/config-repo
-                    default-label: main
+                    default-label: prod
 
 eureka:
     client:
