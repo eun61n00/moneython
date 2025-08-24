@@ -28,5 +28,14 @@ eureka:
         enabled: false
 
 jwt:
-    secret: test-256-bit-secret-for-testing-purpose-only-secret
+    secret: demo-256-bit-secret-for-standalone-testing-only
     expiration: 86400000
+
+server:
+    port: 8081
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info
